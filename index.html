@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staking Calculator</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+
+<body>
+  <div class="calculator-container">
+    <div class="calculator-card">
+      <div class="calculator-header">
+        <div class="header-icon">
+          <i class="fas fa-calculator"></i>
+        </div>
+        <h1>Staking Calculator</h1>
+        <p>(Interactive section where users can enter their staking amount and duration to see estimated earnings.)</p>
+        <p>● [Calculate My Rewards]</p>
+        <p>● Display potential earnings per month, per year, and total duration.</p>
+        <div class="social-links">
+            <a href="#" target="_blank" class="social-link facebook" id="share-facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" target="_blank" class="social-link twitter" id="share-twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" target="_blank" class="social-link linkedin" id="share-linkedin"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      
+      <div class="calculator-body">
+        <div class="input-group">
+          <label for="stake-amount">Staked Amount ($):</label>
+          <div class="input-wrapper">
+            <span class="currency-symbol">$</span>
+            <input type="number" id="stake-amount" class="input-field" value="1000" placeholder="Enter amount">
+          </div>
+          <div class="quick-amounts">
+            <button class="amount-btn" data-amount="100">$100</button>
+            <button class="amount-btn" data-amount="500">$500</button>
+            <button class="amount-btn active" data-amount="1000">$1000</button>
+            <button class="amount-btn" data-amount="5000">$5000</button>
+            <button class="amount-btn" data-amount="10000">$10000</button>
+            <button class="amount-btn" data-amount="25000">$25000</button>
+          </div>
+        </div>
+        
+        <div class="input-group">
+          <label>Stake Duration:</label>
+          <div class="duration-selector">
+            
+            <button class="duration-btn" data-duration="180">6 Months</button>
+            <button class="duration-btn active" data-duration="365">12 Months</button>
+          </div>
+        </div>
+        
+        <div class="input-group apy-group">
+          <label for="stake-apy">APY (%):</label>
+          <div class="input-wrapper">
+            <input type="number" id="stake-apy" class="input-field apy-field" value="10" readonly title="APY is calculated based on your staked amount and duration.">
+          </div>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <div class="results-container">
+          <div class="result-item">
+            <span class="result-label">Total Interest:</span>
+            <span class="result-value highlight" id="earnings">$0.00</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Total Balance in Future:</span>
+            <span class="result-value" id="total-balance">$0.00</span>
+          </div>
+        </div>
+        
+        <button id="calculate-staking" class="action-btn">
+          <i class="fas fa-calculator"></i> Calculate Earnings
+        </button>
+        
+        <button id="contact-expert" class="action-btn">
+          <i class="fas fa-paper-plane"></i> Start Staking 
+        </button>
+        
+        <p class="disclaimer">
+          <i class="fas fa-info-circle"></i> Rates shown are estimates only. Final terms subject to credit approval. All amounts exclude GST.
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Start Staking</h3>
+        <button class="close-modal">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="contact-form">
+          <div class="form-group">
+            <label for="contact-name">Full Name <span class="required">*</span></label>
+            <input type="text" id="contact-name" class="form-control" placeholder="Write your name" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="contact-email">Email Address <span class="required">*</span></label>
+            <input type="email" id="contact-email" class="form-control" placeholder="Email Address" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="contact-whatsapp">WhatsApp <span class="required">*</span></label>
+            <input type="tel" id="contact-whatsapp" class="form-control" placeholder="WhatsApp Number" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="staking-amount">Staking Amount <span class="required">*</span></label>
+            <select id="staking-amount" class="form-control" required>
+              <option value="100">100+</option>
+              <option value="100">500+</option>
+              <option value="500">1000+</option>
+              <option value="1000">5000+</option>
+              <option value="5000">10000+</option>
+              <option value="10000">25000+</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="staking-period">Staking Period <span class="required">*</span></label>
+            <select id="staking-period" class="form-control" required>
+              <option value="180" selected>6 months</option>
+              <option value="365">12 months</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="wallet-info">Wallet Info / Address <span class="required">*</span></label>
+            <input type="text" id="wallet-info" class="form-control" placeholder="Wallet Info / Address" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="message">Message <span class="required">*</span></label>
+            <textarea id="message" class="form-control" placeholder="Write your message..." required></textarea>
+          </div>
+          
+          <div class="form-footer">
+            <button type="submit" class="action-btn">
+              <span id="submit-text">Submit Request</span>
+              <span id="submit-spinner" class="spinner" style="display: none;"></span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Success Message -->
+  <div class="success-message" id="success-message">
+    <div class="success-icon">
+      <i class="fas fa-check-circle"></i>
+    </div>
+    <h3>Thank You!</h3>
+    <p>Your request has been submitted successfully. Our staking specialist will contact you within 1 business day.</p>
+    <button class="action-btn" id="success-close">Continue</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Elements
+      const amountInput = document.getElementById('stake-amount');
+      const apyInput = document.getElementById('stake-apy');
+      const calcBtn = document.getElementById('calculate-staking');
+      const amountBtns = document.querySelectorAll('.amount-btn');
+      const durationBtns = document.querySelectorAll('.duration-btn');
+      const contactBtn = document.getElementById('contact-expert');
+      const modal = document.getElementById('modal');
+      const closeModal = document.querySelector('.close-modal');
+      const contactForm = document.getElementById('contact-form');
+      const successMessage = document.getElementById('success-message');
+      const successClose = document.getElementById('success-close');
+      const earningsDisplay = document.getElementById('earnings');
+      const balanceDisplay = document.getElementById('total-balance');
+
+      // Social Media Share Links
+      const pageUrl = encodeURIComponent(window.location.href);
+      const shareText = encodeURIComponent('Check out this Staking Calculator!');
+
+      const facebookLink = document.getElementById('share-facebook');
+      const twitterLink = document.getElementById('share-twitter');
+      const linkedinLink = document.getElementById('share-linkedin');
+
+      facebookLink.href = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+      twitterLink.href = `https://twitter.com/intent/tweet?url=${pageUrl}&text=${shareText}`;
+      linkedinLink.href = `https://www.linkedin.com/shareArticle?mini=true&url=${pageUrl}&title=${shareText}`;
+      
+      // Initialize calculator
+      updateAPY();
+      
+      // Amount buttons
+      amountBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const amount = this.getAttribute('data-amount');
+          amountInput.value = amount;
+          
+          // Update active state
+          amountBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          
+          updateAPY();
+        });
+      });
+      
+      // Duration buttons
+      durationBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const duration = this.getAttribute('data-duration');
+          
+          // Update active state
+          durationBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          
+          updateAPY();
+        });
+      });
+      
+      // Input changes
+      amountInput.addEventListener('input', function() {
+        // Update active amount button
+        let activeBtnFound = false;
+        amountBtns.forEach(btn => {
+          if (btn.getAttribute('data-amount') === this.value) {
+            btn.classList.add('active');
+            activeBtnFound = true;
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+        
+        if (!activeBtnFound && this.value !== '') {
+          amountBtns.forEach(btn => btn.classList.remove('active'));
+        }
+        
+        updateAPY();
+      });
+      
+      calcBtn.addEventListener('click', calculateEarnings);
+      
+      // Contact expert button
+      contactBtn.addEventListener('click', function() {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+      
+      // Close modal
+      closeModal.addEventListener('click', function() {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+      });
+      
+      // Variables to track Gmail tab
+      let gmailTab = null;
+      let gmailComposeUrl = '';
+      let checkGmailWindowInterval = null;
+
+      // Form submission (open Gmail compose page)
+      contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Validate form before proceeding
+        if (!contactForm.checkValidity()) {
+          contactForm.reportValidity();
+          return;
+        }
+        
+        // Show loading state
+        document.getElementById('submit-text').style.display = 'none';
+        document.getElementById('submit-spinner').style.display = 'inline-block';
+
+        // Collect form data
+        const name = document.getElementById('contact-name').value;
+        const email = document.getElementById('contact-email').value;
+        const whatsapp = document.getElementById('contact-whatsapp').value;
+        const amount = document.getElementById('staking-amount').value;
+        const period = document.getElementById('staking-period').value;
+        const wallet = document.getElementById('wallet-info').value;
+        const message = document.getElementById('message').value;
+
+        // Construct the email body
+        const emailBody = `Name: ${name}\nEmail: ${email}\nWhatsApp: ${whatsapp}\nAmount: ${amount}\nPeriod: ${period}\nWallet: ${wallet}\nMessage: ${message}`;
+        const emailSubject = "New Staking Request";
+        const emailTo = "nafizcst@gmail.com";
+
+        // Construct Gmail compose URL
+        gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailTo)}&su=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+
+        // Open Gmail compose page
+        try {
+          setTimeout(() => {
+            // Open Gmail tab
+            gmailTab = window.open(gmailComposeUrl, '_blank', 'width=800,height=600');
+            
+            // Hide loading state and modal
+            document.getElementById('submit-text').style.display = 'inline';
+            document.getElementById('submit-spinner').style.display = 'none';
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            contactForm.reset();
+            
+            // Hide success message initially
+            successMessage.classList.remove('active');
+
+            // Clear any existing interval
+            if (checkGmailWindowInterval) {
+              clearInterval(checkGmailWindowInterval);
+            }
+
+            // Monitor Gmail window closure
+            checkGmailWindowInterval = setInterval(() => {
+              if (gmailTab && gmailTab.closed) {
+                clearInterval(checkGmailWindowInterval);
+                checkGmailWindowInterval = null;
+                successMessage.classList.add('active');
+              }
+            }, 50);
+
+            // Timeout to assume email sent if Gmail window is closed after 60 seconds
+            setTimeout(() => {
+              if (gmailTab && gmailTab.closed) {
+                successMessage.classList.add('active');
+              }
+            }, 60);
+          }, 1200); // Delay before opening Gmail
+        } catch (error) {
+          console.error("Error opening Gmail compose page:", error);
+          alert("There was an issue opening the email client. Please try again.");
+          document.getElementById('submit-text').style.display = 'inline';
+          document.getElementById('submit-spinner').style.display = 'none';
+        }
+      });
+
+      // Close success message
+      successClose.addEventListener('click', function() {
+        successMessage.classList.remove('active');
+      });
+      
+      // Close modal when clicking outside
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          modal.classList.remove('active');
+          document.body.style.overflow = 'auto';
+        }
+      });
+      
+      // Staking calculations
+      function updateAPY() {
+        let amount = parseFloat(amountInput.value);
+        let duration = parseInt(document.querySelector('.duration-btn.active').getAttribute('data-duration'));
+        let apy = 10;
+
+        if (duration === 365) {
+          if (amount >= 250 && amount < 1000) {
+            apy = 15;
+          } else if (amount >= 1000 && amount < 5000) {
+            apy = 20;
+          } else if (amount >= 5000 && amount < 10000) {
+            apy = 22.5;
+          } else if (amount >= 10000) {
+            apy = 25;
+          }
+        }
+
+        // Animate APY update
+        apyInput.classList.add('animate-update');
+        apyInput.value = apy;
+        setTimeout(() => apyInput.classList.remove('animate-update'), 300);
+
+        // Automatically update earnings
+        calculateEarnings();
+      }
+
+      function calculateEarnings() {
+        let P = parseFloat(amountInput.value);
+        let r = parseFloat(apyInput.value) / 100;
+        let t = parseInt(document.querySelector('.duration-btn.active').getAttribute('data-duration')) / 365;
+
+        if (isNaN(P) || isNaN(r) || isNaN(t)) {
+          earningsDisplay.innerText = "$0.00";
+          balanceDisplay.innerText = "$0.00";
+          return;
+        }
+
+        let A = P * (1 + (r * t)); // Simple Interest
+        let earnings = A - P;
+
+        // Animate results update
+        earningsDisplay.classList.add('animate-result');
+        balanceDisplay.classList.add('animate-result');
+        earningsDisplay.innerText = `$${earnings.toFixed(2)}`;
+        balanceDisplay.innerText = `$${A.toFixed(2)}`;
+        setTimeout(() => {
+          earningsDisplay.classList.remove('animate-result');
+          balanceDisplay.classList.remove('animate-result');
+        }, 300);
+      }
+    });
+  </script>
+</body>
+</html>
